@@ -6,12 +6,13 @@ import * as Stats from 'stats.js/src/Stats.js';
 import React, { useState, useEffect, useRef } from 'react';
 import spaceImage from '../photo/space.png'
 import planet1Image from '../photo/planet1_diff.jpg'
-import planet2Image from '../photo/planet2_diff.jpg'
-import planet1Normal from '../photo/planet1_nor.exr'
-import planet2Normal from '../photo/planet2_nor.exr'
 import planet1Disp from '../photo/planet1_disp.png'
-import planet2Disp from '../photo/planet2_disp.png'
+import planet1Normal from '../photo/planet1_nor.exr'
 import planet1Rough from '../photo/planet1_rough.jpg'
+
+import planet2Image from '../photo/planet2_diff.jpg'
+import planet2Disp from '../photo/planet2_disp.png'
+import planet2Normal from '../photo/planet2_nor.exr'
 import planet2Rough from '../photo/planet2_rough.exr'
 
 export default function ThreeTest() {
@@ -51,7 +52,7 @@ export default function ThreeTest() {
         displacementMap: planet1DispMap,
         roughnessMap: planet1RoughMap
     });
-    
+
     const material2 = new THREE.MeshStandardMaterial({
         map: planet2Texture,
         normalMap: planet2NormalMap,
