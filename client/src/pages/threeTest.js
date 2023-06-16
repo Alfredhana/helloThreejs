@@ -18,6 +18,18 @@ export default function ThreeTest() {
 
     let oldTime = Date.now();
     
+    // Initialization
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+    
+    const renderer = new THREE.WebGLRenderer({
+        canvas: document.querySelector('#bg'),
+    })
+    
+    const controls = new OrbitControls( camera, renderer.domElement );
+
+    renderer.render(scene, camera);    
+    
     // Create Geometry
     const planet1Texture = new THREE.TextureLoader().load(planet1Image);
     const planet1NormalMap = new THREE.TextureLoader().load(planet1Normal);
@@ -26,38 +38,28 @@ export default function ThreeTest() {
     const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
     const planet1RoughMap = new THREE.TextureLoader().load(planet1Rough);
     const planet2RoughMap = new THREE.TextureLoader().load(planet2Rough);
+    const spaceTexture = new THREE.TextureLoader().load(spaceImage);
+
+    const geometry = new THREE.SphereGeometry( 8, 64, 64 ); 
+    //const material = new THREE.MeshStandardMaterial({color: 0xFF6347});
+    const material1 = new THREE.MeshStandardMaterial({
+        map: planet1Texture,
+        normalMap: planet1NormalMap,
+        displacementMap: planet1DispMap,
+        roughnessMap: planet1RoughMap
+    });
+    const material2 = new THREE.MeshStandardMaterial({
+        map: planet2Texture,
+        normalMap: planet2NormalMap,
+        displacementMap: planet2DispMap,
+        roughnessMap: planet2RoughMap
+    });
+    
+    const planet1 = new THREE.Mesh(geometry, material1);
+    
+    const planet2 = new THREE.Mesh(geometry, material2);
 
     useEffect(() => {
-        // Initialization
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
-        
-        const renderer = new THREE.WebGLRenderer({
-            canvas: document.querySelector('#bg'),
-        })
-        
-        const controls = new OrbitControls( camera, renderer.domElement );
-
-        renderer.render(scene, camera);
-
-        const geometry = new THREE.SphereGeometry( 8, 64, 64 ); 
-        //const material = new THREE.MeshStandardMaterial({color: 0xFF6347});
-        const material1 = new THREE.MeshStandardMaterial({
-            map: planet1Texture,
-            normalMap: planet1NormalMap,
-            displacementMap: planet1DispMap,
-            roughnessMap: planet1RoughMap
-        });
-        const material2 = new THREE.MeshStandardMaterial({
-            map: planet2Texture,
-            normalMap: planet2NormalMap,
-            displacementMap: planet2DispMap,
-            roughnessMap: planet2RoughMap
-        });
-        
-        const planet1 = new THREE.Mesh(geometry, material1);
-        
-        const planet2 = new THREE.Mesh(geometry, material2);
         planet1.position.set(-15, 0, 0);
         planet1.rotation.x += 90;
         planet2.position.set(15, 0, 0);
@@ -76,7 +78,6 @@ export default function ThreeTest() {
 
         Array(1000).fill().forEach(addStarParticles)
 
-        const spaceTexture = new THREE.TextureLoader().load(spaceImage);
         scene.background = spaceTexture;
         
         // Lighting
