@@ -40,6 +40,8 @@ npm install
 npm run start
 ```
 
+It is good when you see 'Server listening on 3000'
+
 # Deployment
 
 The project is currently hosted on heroku
