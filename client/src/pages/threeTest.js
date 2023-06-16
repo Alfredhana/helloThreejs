@@ -10,11 +10,22 @@ import planet1Normal from '../photo/planet1_nor.exr'
 import planet2Normal from '../photo/planet2_nor.exr'
 import planet1Disp from '../photo/planet1_disp.png'
 import planet2Disp from '../photo/planet2_disp.png'
+import planet1Rough from '../photo/planet1_rough.exr'
+import planet2Rough from '../photo/planet2_rough.exr'
 
 export default function ThreeTest() {
     const mount = useRef(null);
 
     let oldTime = Date.now();
+    
+    // Create Geometry
+    const planet1Texture = new THREE.TextureLoader().load(planet1Image);
+    const planet1NormalMap = new THREE.TextureLoader().load(planet1Normal);
+    const planet1DispMap = new THREE.TextureLoader().load(planet1Disp);
+    const planet2DispMap = new THREE.TextureLoader().load(planet2Image);
+    const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
+    const planet1RoughMap = new THREE.TextureLoader().load(planet1Rough);
+    const planet2RoughMap = new THREE.TextureLoader().load(planet2Rough);
 
     useEffect(() => {
         // Initialization
@@ -28,26 +39,20 @@ export default function ThreeTest() {
         const controls = new OrbitControls( camera, renderer.domElement );
 
         renderer.render(scene, camera);
-        
-        // Create Geometry
-        const planet1Texture = new THREE.TextureLoader().load(planet1Image);
-        const planet1NormalMap = new THREE.TextureLoader().load(planet1Normal);
-        const planet1DispMap = new THREE.TextureLoader().load(planet1Disp);
-        const planet2Texture = new THREE.TextureLoader().load(planet2Image);
-        const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
-        const planet2DispMap = new THREE.TextureLoader().load(planet2Disp);
 
         const geometry = new THREE.SphereGeometry( 8, 64, 64 ); 
         //const material = new THREE.MeshStandardMaterial({color: 0xFF6347});
         const material1 = new THREE.MeshStandardMaterial({
             map: planet1Texture,
             normalMap: planet1NormalMap,
-            displacementMap: planet1DispMap
+            displacementMap: planet1DispMap,
+            roughnessMap: planet1RoughMap
         });
         const material2 = new THREE.MeshStandardMaterial({
             map: planet2Texture,
             normalMap: planet2NormalMap,
-            displacementMap: planet2DispMap
+            displacementMap: planet2DispMap,
+            roughnessMap: planet2RoughMap
         });
         
         const planet1 = new THREE.Mesh(geometry, material1);
