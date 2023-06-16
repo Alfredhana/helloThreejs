@@ -1,7 +1,7 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { Stats } from 'stats.js/src/stats.min.js';
+import * as Stats from 'stats.js/src/Stats.js';
 
 import React, { useState, useEffect, useRef } from 'react';
 import spaceImage from '../photo/space.png'
@@ -35,9 +35,11 @@ export default function ThreeTest() {
     const planet1Texture = new THREE.TextureLoader().load(planet1Image);
     const planet1NormalMap = new THREE.TextureLoader().load(planet1Normal);
     const planet1DispMap = new THREE.TextureLoader().load(planet1Disp);
+    const planet1RoughMap = new THREE.TextureLoader().load(planet1Rough);
+
+    const planet2Texture = new THREE.TextureLoader().load(planet2Image);
     const planet2DispMap = new THREE.TextureLoader().load(planet2Disp);
     const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
-    const planet1RoughMap = new THREE.TextureLoader().load(planet1Rough);
     const planet2RoughMap = new THREE.TextureLoader().load(planet2Rough);
     const spaceTexture = new THREE.TextureLoader().load(spaceImage);
 
@@ -49,6 +51,7 @@ export default function ThreeTest() {
         displacementMap: planet1DispMap,
         roughnessMap: planet1RoughMap
     });
+    
     const material2 = new THREE.MeshStandardMaterial({
         map: planet2Texture,
         normalMap: planet2NormalMap,
