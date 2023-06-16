@@ -1,6 +1,7 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { Stats } from 'starts.js/src/Stats.js';
 
 import React, { useState, useEffect, useRef } from 'react';
 import spaceImage from '../photo/space.png'
@@ -58,11 +59,26 @@ export default function ThreeTest() {
     const planet1 = new THREE.Mesh(geometry, material1);
     
     const planet2 = new THREE.Mesh(geometry, material2);
+    
+    // Lighting
+    const pointLight1 = new THREE.PointLight( 0x80adbf, 1, 10 ); // soft white light
+    pointLight1.position.set(-4, 5, 1);
+    pointLight1.castShadow = true; // default false
+
+    const pointLight2 = new THREE.PointLight( 0x80adbf, 1, 10 ); // soft white light
+    pointLight2.position.set(4, 5, 1);
+    
+    const ambientLight = new THREE.AmbientLight(0xffffff);
+
+    var stats = new Stats();
+    stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
 
     useEffect(() => {
         planet1.position.set(-15, 0, 0);
         planet1.rotation.x += 90;
         planet2.position.set(15, 0, 0);
+
         scene.add(planet1, planet2);
 
         const addStarParticles = () => {
@@ -80,15 +96,6 @@ export default function ThreeTest() {
 
         scene.background = spaceTexture;
         
-        // Lighting
-        const pointLight1 = new THREE.PointLight( 0x80adbf, 1, 10 ); // soft white light
-        pointLight1.position.set(-4, 5, 1);
-        pointLight1.castShadow = true; // default false
-
-        const pointLight2 = new THREE.PointLight( 0x80adbf, 1, 10 ); // soft white light
-        pointLight2.position.set(4, 5, 1);
-        
-        const ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add( pointLight1, pointLight2, ambientLight );//Set up shadow properties for the light
         //scene.add( pointLight1, pointLight2 );
 
@@ -118,9 +125,12 @@ export default function ThreeTest() {
             //planet2.rotation.y -= 0.01;
             //planet2.rotation.y += 0.01;
             
+	        stats.begin();
             controls.update();
 
             renderer.render(scene, camera);
+            
+	        stats.end();
         }
 
         update();

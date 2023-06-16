@@ -21,7 +21,7 @@ npm install
 ## Build in Client
 
 ```
-npm build
+npm run build
 ```
 
 
