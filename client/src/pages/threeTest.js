@@ -1,7 +1,5 @@
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import * as Stats from 'stats.js/src/Stats.js';
 
 import React, { useState, useEffect, useRef } from 'react';
 import spaceImage from '../photo/space.png'
@@ -20,17 +18,6 @@ export default function ThreeTest() {
 
     let oldTime = Date.now();
     
-    // Initialization
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
-    
-    const renderer = new THREE.WebGLRenderer({
-        canvas: document.querySelector('#bg'),
-    })
-    
-    const controls = new OrbitControls( camera, renderer.domElement );
-
-    renderer.render(scene, camera);    
     
     // Create Geometry
     const planet1Texture = new THREE.TextureLoader().load(planet1Image);
@@ -42,9 +29,8 @@ export default function ThreeTest() {
     const planet2DispMap = new THREE.TextureLoader().load(planet2Disp);
     const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
     const planet2RoughMap = new THREE.TextureLoader().load(planet2Rough);
-    const spaceTexture = new THREE.TextureLoader().load(spaceImage);
-
     const geometry = new THREE.SphereGeometry( 8, 64, 64 ); 
+
     //const material = new THREE.MeshStandardMaterial({color: 0xFF6347});
     const material1 = new THREE.MeshStandardMaterial({
         map: planet1Texture,
@@ -52,7 +38,6 @@ export default function ThreeTest() {
         displacementMap: planet1DispMap,
         roughnessMap: planet1RoughMap
     });
-
     const material2 = new THREE.MeshStandardMaterial({
         map: planet2Texture,
         normalMap: planet2NormalMap,
@@ -63,7 +48,10 @@ export default function ThreeTest() {
     const planet1 = new THREE.Mesh(geometry, material1);
     
     const planet2 = new THREE.Mesh(geometry, material2);
-    
+    planet1.position.set(-15, 0, 0);
+    planet1.rotation.x += 90;
+    planet2.position.set(15, 0, 0);
+
     // Lighting
     const pointLight1 = new THREE.PointLight( 0x80adbf, 1, 10 ); // soft white light
     pointLight1.position.set(-4, 5, 1);
@@ -74,14 +62,23 @@ export default function ThreeTest() {
     
     const ambientLight = new THREE.AmbientLight(0xffffff);
 
-    var stats = new Stats();
-    stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild( stats.dom );
+    const lightHelper1 = new THREE.PointLightHelper(pointLight1, 1);
+    const lightHelper2 = new THREE.PointLightHelper(pointLight2, 1);
+    const gridHelper = new THREE.GridHelper(2000, 50);
 
     useEffect(() => {
-        planet1.position.set(-15, 0, 0);
-        planet1.rotation.x += 90;
-        planet2.position.set(15, 0, 0);
+
+        // Initialization
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+        
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#bg'),
+        })
+        
+        const controls = new OrbitControls( camera, renderer.domElement );
+        
+        renderer.render(scene, camera);
 
         scene.add(planet1, planet2);
 
@@ -98,14 +95,12 @@ export default function ThreeTest() {
 
         Array(1000).fill().forEach(addStarParticles)
 
+        const spaceTexture = new THREE.TextureLoader().load(spaceImage);
         scene.background = spaceTexture;
         
         scene.add( pointLight1, pointLight2, ambientLight );//Set up shadow properties for the light
         //scene.add( pointLight1, pointLight2 );
 
-        const lightHelper1 = new THREE.PointLightHelper(pointLight1, 1);
-        const lightHelper2 = new THREE.PointLightHelper(pointLight2, 1);
-        const gridHelper = new THREE.GridHelper(2000, 50);
         //scene.add(lightHelper1, lightHelper2);
         //scene.add(lightHelper, gridHelper);
 
@@ -129,12 +124,9 @@ export default function ThreeTest() {
             //planet2.rotation.y -= 0.01;
             //planet2.rotation.y += 0.01;
             
-	        stats.begin();
             controls.update();
 
             renderer.render(scene, camera);
-            
-	        stats.end();
         }
 
         update();
@@ -161,5 +153,3 @@ export default function ThreeTest() {
         />
     )
 }
-
-
