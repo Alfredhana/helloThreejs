@@ -1,7 +1,7 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { Stats } from 'starts.js/src/Stats.js';
+import { Stats } from 'stats.js/src/stats.min.js';
 
 import React, { useState, useEffect, useRef } from 'react';
 import spaceImage from '../photo/space.png'
@@ -11,7 +11,7 @@ import planet1Normal from '../photo/planet1_nor.exr'
 import planet2Normal from '../photo/planet2_nor.exr'
 import planet1Disp from '../photo/planet1_disp.png'
 import planet2Disp from '../photo/planet2_disp.png'
-import planet1Rough from '../photo/planet1_rough.exr'
+import planet1Rough from '../photo/planet1_rough.jpg'
 import planet2Rough from '../photo/planet2_rough.exr'
 
 export default function ThreeTest() {
@@ -35,7 +35,7 @@ export default function ThreeTest() {
     const planet1Texture = new THREE.TextureLoader().load(planet1Image);
     const planet1NormalMap = new THREE.TextureLoader().load(planet1Normal);
     const planet1DispMap = new THREE.TextureLoader().load(planet1Disp);
-    const planet2DispMap = new THREE.TextureLoader().load(planet2Image);
+    const planet2DispMap = new THREE.TextureLoader().load(planet2Disp);
     const planet2NormalMap = new THREE.TextureLoader().load(planet2Normal);
     const planet1RoughMap = new THREE.TextureLoader().load(planet1Rough);
     const planet2RoughMap = new THREE.TextureLoader().load(planet2Rough);
